@@ -1,0 +1,125 @@
+"""A little Python code to randomize the letters of the Alphabet."""
+"""Written in Python 3.4 by Artengar"""
+"""Made with influences of presentations performed by Olivier Ibsen"""
+
+######################## Globals ########################
+import random
+random.seed()
+
+Serial = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+Possibilities = 25 #One less than the 26 letter of the alphabet, because Python starts counting on zero!
+Choice_number = 30
+Choice_letter = "A"
+
+####################### Functions #######################
+def randomizer():
+	"""Deliver a random number"""
+	global Choice_number
+	global Possibilities
+	#in Python, a reference to the global variable is necessary, so use 'global!'
+	#see http://stackoverflow.com/a/423668
+	Choice_number = random.randint(0,Possibilities)
+	return ()
+
+def letter_result():
+	"""Determine the chosen letter"""
+	global Choice_letter
+	global Serial
+	global Choice_number
+	Choice_letter = Serial[Choice_number]
+	"""And get the chosen letter out the serial"""
+	if Choice_number!=0 and Choice_number!=Possibilities:
+		#A letter in the middle of the alphabet disappears
+		#print "------------------OPTION 1 -", len(Serial), Possibilities, Choice_number, Choice_letter, Serial
+		Serial = Serial[0:Choice_number] + Serial[Choice_number+1:len(Serial)]
+		#print "------------------OPTION 1 -", len(Serial), Possibilities, Choice_number, Choice_letter, Serial
+		#DO NOT forget: Python starts counting on 0!!!!!!
+		#to do Serial-1 AND   
+	elif Choice_number==Possibilities:
+		#the last letter of the alphabet disappears
+		#print "------------------OPTION 2 -", len(Serial), Possibilities, Choice_number, Choice_letter, Serial
+		Serial = Serial[0:len(Serial)-1]
+		#print "------------------OPTION 2 -", len(Serial), Possibilities, Choice_number, Choice_letter, Serial
+	elif Choice_number==0 and Possibilities!=0:
+		#the first letter of the alphabet disappears
+		#print "------------------OPTION 3 -", len(Serial), Possibilities, Choice_number, Choice_letter, Serial
+		Serial = Serial[Choice_number+1:len(Serial)]
+		#print "------------------OPTION 3 -", len(Serial), Possibilities, Choice_number, Choice_letter, Serial
+	elif Choice_number==0 and Possibilities==0:
+		#no letters remaining
+		#print "------------------OPTION 4 -", len(Serial), Possibilities, Choice_number, Choice_letter, Serial
+		return False
+	return ()
+
+def visual_result():
+	"""Display a letter to work with"""
+	if Choice_letter=="A":
+		print "I give you the letter A"
+	elif Choice_letter=="B":
+		print "I give you the letter B"
+	elif Choice_letter=="C":
+		print "I give you the letter C"
+	elif Choice_letter=="D":
+		print "I give you the letter D"
+	elif Choice_letter=="E":
+		print "I give you the letter E"
+	elif Choice_letter=="F":
+		print "I give you the letter F"
+	elif Choice_letter=="G":
+		print "I give you the letter G"
+	elif Choice_letter=="H":
+		print "I give you the letter H"
+	elif Choice_letter=="I":
+		print "I give you the letter I"
+	elif Choice_letter=="J":
+		print "I give you the letter J"
+	elif Choice_letter=="K":
+		print "I give you the letter K"
+	elif Choice_letter=="L":
+		print "I give you the letter L"
+	elif Choice_letter=="M":
+		print "I give you the letter M"
+	elif Choice_letter=="N":
+		print "I give you the letter N"
+	elif Choice_letter=="O":
+		print "I give you the letter O"
+	elif Choice_letter=="P":
+		print "I give you the letter P"
+	elif Choice_letter=="Q":
+		print "I give you the letter Q"
+	elif Choice_letter=="R":
+		print "I give you the letter R"
+	elif Choice_letter=="S":
+		print "I give you the letter S"
+	elif Choice_letter=="T":
+		print "I give you the letter T"
+	elif Choice_letter=="U":
+		print "I give you the letter U"
+	elif Choice_letter=="V":
+		print "I give you the letter V"
+	elif Choice_letter=="W":
+		print "I give you the letter W"
+	elif Choice_letter=="X":
+		print "I give you the letter X"
+	elif Choice_letter=="Y":
+		print "I give you the letter Y"
+	elif Choice_letter=="Z":
+		print "I give you the letter Z"
+	else:
+		print "Oh, I forgot where I was. Let.'s try for an other one."
+
+######################## Program ########################
+print "\nWelcome. I will give the 26 letters of the alphabeth in a random order.\n"
+start = raw_input("Press enter to start: \n")
+if len(start)!=0:
+	print "\n WHAT IS THIS? Only an enter I asked! I do not except anything else than enter! But good, for you, I will go forth. \n"
+
+while (Possibilities>-1):
+	randomizer()
+	letter_result()
+	visual_result()
+	raw_input("")
+	Possibilities = Possibilities-1
+
+print "I am out of options. I quit here. Bye!\n"
+Quit = raw_input("Press enter to stop the program.")
