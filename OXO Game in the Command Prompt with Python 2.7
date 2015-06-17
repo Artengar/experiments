@@ -1,0 +1,285 @@
+'''
+A simple OXO game to play in the Command Prompt if Python 2.7 is installed.
+Made by Artengar (Maarten Renckens)
+'''
+import os
+os_name = os.name
+def clear():
+    import os
+    if os.name == "ce" or os.name == "nt" or os.name == "dos":
+        os.system("cls")
+    elif os.name=="posix":
+        os.system("clear")
+    #else: print('\n'*120) # I do not find this an elegant solution...
+clear()
+
+def check_for_enter():
+    given = raw_input("\n  Please press enter: ")
+    while given != "":
+        given = raw_input("  Just press enter: ")
+    clear()
+
+print "\n  WELCOME! This is an OXO Game written in Python 2.7.\n  You can play in the command prompt if this version of Python is installed.\n  PLAYER1 plays with the O, PLAYER2 is the X.\n  Succes to Both!"
+check_for_enter()
+clear()
+
+def reset_values(board, board_size, points_p_1, points_p_2):
+    board = []
+    board_size = 0
+    points_p_1 = 0
+    points_p_2 = 0
+
+def determine_board(size):
+    start = True
+    while start == True: 
+        try:
+            size = input("\n  How big should the board be?\n  There is the choice from 3x3 to 12x12.\n  Press a single number in this range: ")
+            start = False
+        except (SyntaxError, NameError):
+            print "  Give a number please?"
+            size = None
+    if size < 3:
+        size = 3
+        print "\n  Board size to small. it is adjusted to 3x3. Have a nice play!"
+        check_for_enter()
+        return size
+    elif size >= 12:
+        size = 12
+        print "\n  Board size to large. it is adjusted to 12x12. Have a nice play!"
+        check_for_enter()
+        return size
+    elif 3 <= size and size <= 12:
+        print "\n  Board size is ", size, " x ", size, ". Have a nice play!"
+        check_for_enter()
+        return size
+    else:
+        size = 7
+        print "\n  Board size is invalid. it is adjusted to 7x7. Have a nice play!"
+        check_for_enter()
+        return size
+
+def make_board(board, board_size):
+    for row in range(board_size):
+        board.append(["+"] * board_size)
+    return board
+
+def print_board(board, board_size, filled, points_p_1, points_p_2):
+    #line = 1
+    temp = board_size * board_size
+    if board == []:
+        print board
+    else:
+        #I was printing the numbers of the rows/lines, but it didn't work well on large numbers
+        #print "      ", 
+        #for item in range(board_size):
+        #    print item+1,
+        #print
+        #print
+        for row in board:
+            if row == 1:
+                print " ", " ".join(row),
+            elif row == 2:
+                print " ", " ".join(row),
+            elif row == 3:
+                print " ", " ".join(row),
+            else:
+                print " ", " ".join(row)
+            #print " ", line, "  ", " ".join(row)
+            #line += 1
+        #placed this info here because it did not want to be after the box...
+        print
+        print "  Filled out ", filled, " of ", temp, " fields."
+        print "  Points player 1: ", points_p_1
+        print "  Points player 2: ", points_p_2
+    print
+
+def input_player(player):
+    if player == 1:
+        print "  PLAYER 1 wants to place an O on "
+    elif player == 2:
+        print "  PLAYER 2 wants to place an X on "
+    
+    test1 = True
+    while test1 == True:
+        try:
+            x = int(input("  row number: "))
+            test1 = False
+        except (NameError, SyntaxError):
+            print "  was this a number?"
+    
+    test2 = True
+    while test2 == True:
+        try:
+            y = int(input("  column number: "))
+            test2 = False
+        except (NameError, SyntaxError):
+            print "  was this a number?"
+    
+    choice = [x,y]
+    return choice
+
+def check_input(board, board_size, x, y):
+    if x < 0 or board_size <= x:
+        print "\n This x-value ", x+1, " is not valid. Try again: "
+        return False
+    elif y < 0 or board_size <= y:
+        print "\n This y-value ", y+1, " is not valid. Try again: "
+        return False
+    elif board[x][y] != "+":
+        print " This field is already taken! Choose an other one. "
+        return False
+    else:
+        return True
+
+def adjust_board(board, x, y, player):
+    if player == 1:
+        board[x][y] = "O"
+    elif player == 2:
+        board[x][y] = "X"
+    return board
+
+def check_for_oxo(board, x, y, board_size):
+    points = 0
+    if board[x][y] == "O":
+        if x-2 >= 0:
+            if board[x-1][y] == "X" and board[x-2][y] == "O":
+                points += 1
+                #print "Phase 1.1"
+        if x+2 < board_size:
+            if board[x+1][y] == "X" and board[x+2][y] == "O":
+                points += 1
+                #print "Phase 1.2"
+        if y+2 < board_size:
+            if board[x][y+1] == "X" and board[x][y+2] == "O":
+                points += 1
+                #print "Phase 1.3"
+        if y-2 >= 0:
+            if board[x][y-1] == "X" and board[x][y-2] == "O":
+                points += 1
+                #print "Phase 1.4"
+        
+        if x-2 >= 0 and y-2 >= 0:
+            if board[x-1][y-1] == "X" and board[x-2][y-2] == "O":
+                points += 1
+                #print "Phase 2.1"
+        if x+2 < board_size and y-2 >= 0:
+            if board[x+1][y-1] == "X" and board[x+2][y-2] == "O":
+                points += 1
+                #print "Phase 2.2"
+        if x+2 < board_size and y+2 < board_size:
+            if board[x+1][y+1] == "X" and board[x+2][y+2] == "O":
+                points += 1
+                #print "Phase 2.3"
+        if x-2 >= 0 and y+2 < board_size:
+            if board[x-1][y+1] == "X" and board[x-2][y+2] == "O":
+                points += 1
+                #print "Phase 2.4"
+    
+    elif board[x][y] == "X":
+        if x - 1 >= 0 and x + 1 < board_size:
+            if board[x-1][y] == "O" and board[x+1][y] == "O":
+                points += 1
+                #print "Phase 3.1"
+        if y - 1 >= 0 and y + 1 < board_size:
+            if board[x][y-1] == "O" and board[x][y+1] == "O":
+                points += 1
+                #print "Phase 3.2"
+        if x - 1 >= 0 and x + 1 < board_size and y - 1 >= 0 and y + 1 < board_size:
+            if board[x-1][y-1] == "O" and board[x+1][y+1] == "O":
+                points += 1
+                #print "Phase 3.3"
+            if board[x-1][y+1] == "O" and board[x+1][y-1] == "O":
+                points += 1
+                #print "Phase 3.4"
+    return points
+
+def debug(board, board_size, points_p_1, points_p_2, player, additional_turns, additional_points):
+    print
+    print " Debug modus: "
+    print " Game played on OS: ", os_name
+    print
+    print_board(board, board_size)
+    print " board_size = ", board_size
+    print " points_pl_1 = ", points_p_1
+    print " points_pl_2 = ", points_p_2
+    print " Player ", player, " is now bussy."
+    print " This is his extra turn number ", additional_turns
+    check_for_enter()
+
+#the functions to play the game.
+def play_game(board, board_size, points_p_1, points_p_2):
+    playing = True
+    while playing == True:
+        board_size = determine_board(board_size)
+        board = make_board(board, board_size)
+        #Start the game
+        filled = 0
+        player = 1
+        additional_turns = 0
+        max_fields = board_size * board_size
+        while filled < max_fields:
+            clear()
+            additional_points = 0
+            print
+            print_board(board, board_size, filled, points_p_1, points_p_2)
+            if additional_turns > 0:
+                print
+                print
+                print "  YESSS!!!!"
+                print "  PLAYER ", player, " gets his EXTRA TURN for making a point!"
+                print
+                print
+            #start placing OXO:
+            #ATTENTION: x and y are SWAPPED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            coordinate = False
+            while coordinate != True:
+                choice = input_player(player)
+                x = choice[0] - 1
+                y = choice[1] - 1
+                if check_input(board, board_size, x, y) == False:
+                    coordinate = False
+                else:
+                    coordinate = True
+            board = adjust_board(board, x, y, player)
+            #check for points and if it's the other player his turn
+            additional_points = check_for_oxo(board, x, y, board_size)
+            if additional_points > 0:
+                additional_turns += 1
+                if player == 1:
+                    points_p_1 += additional_points
+                elif player == 2:
+                    points_p_2 += additional_points
+            
+            #debug(board, board_size, points_p_1, points_p_2, player, additional_turns, additional_points)
+            
+            #Make place for the next player
+            if additional_points == 0:
+                additional_turns = 0
+                if player == 1:
+                    player = 2
+                elif player == 2:
+                    player = 1
+            filled += 1
+        
+        clear()
+        print
+        print_board(board, board_size, filled, points_p_1, points_p_2)
+        
+        further = raw_input("\n  Game finished! If you want a new game, press enter.\n  Otherwise, press any key before pressing Enter: ")
+        if further == "":
+            playing = True
+            clear()
+            #Reset values:
+            board = []
+            board_size = 0
+            points_p_1 = 0
+            points_p_2 = 0
+        else:
+            playing = False
+            clear()
+
+board = []
+board_size = 0
+points_p_1 = 0
+points_p_2 = 0
+play_game(board, board_size, points_p_1, points_p_2)
