@@ -1,7 +1,6 @@
 #!/usr/bin/python
 #2017-02-06 - Initial release
-#Source: RENCKENS, M. & READSEARCH. (2017) List certain file extionsions in first and second level directories
-# READSEARCH.be
+#Source: RENCKENS, M. (2017) List certain file extionsions in first and second level directories
 
 #How to use this script?
 #First, make sure Python 3.0 is installed on your device (https://www.python.org/)
@@ -20,7 +19,7 @@ import os, sys, re
 #For which extension should be searched?
 desiredExtension = '.TextGrid'
 #Define header for the file
-header = '# ' + sys.argv[0] + ' (Renckens, M. & READSEARCH, 2017)\nFirst and second level subdirectories are searched and files ending on ' + desiredExtension + ' are listed below.\n\n'
+header = '# ' + sys.argv[0] + ' (Renckens, M. 2017)\nFirst and second level subdirectories are searched and files ending on ' + desiredExtension + ' are listed below.\n\n'
 #Gather all output information
 directoryList = "" + header
 #Remember statistics
