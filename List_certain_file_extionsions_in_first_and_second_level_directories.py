@@ -3,7 +3,7 @@
 #Source: RENCKENS, M. (2017) List certain file extionsions in first and second level directories
 
 #How to use this script?
-#First, make sure Python 3.0 is installed on your device (https://www.python.org/)
+#First, make sure Python 2 or 3 is installed on your device (https://www.python.org/)
 #Then, open the commandprompt and change the directory to where all files are stored.
 # An example on Windows: cd C:\Users\USERFOLDER\Documents/FOLDER_WITH_FILES
 # An example on Ubuntu 14: cd/home/USERFOLDER/Documents/FOLDER_WITH_FILES
@@ -17,7 +17,7 @@
 import os, sys, re
 
 #For which extension should be searched?
-desiredExtension = '.TextGrid'
+desiredExtension = '.jpg'
 #Define header for the file
 header = '# ' + sys.argv[0] + ' (Renckens, M. 2017)\nFirst and second level subdirectories are searched and files ending on ' + desiredExtension + ' are listed below.\n\n'
 #Gather all output information
@@ -88,9 +88,9 @@ except:
 
 print("======================================================")
 print("Processed %s subfolders in this directory" % (amountOfSubFolders) )
-print("Skipped %s items:"  % (amountOfSkippedFiles))
-print("    files named .DS_Store, filenames starting with ._")
-print("    OR files with a different extension than required")
+print("Skipped %s items. These are:"  % (amountOfSkippedFiles))
+print("    files named .DS_Store, files for with the name starts with ._")
+print("    AND files with a different extension than required")
 print("Job finished =========================================")
 
 #--- EOF -----------------------------------------
